@@ -1,0 +1,4 @@
+- hosts: monit
+  sudo: yes
+  roles:
+    - pgolm.monit
