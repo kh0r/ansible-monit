@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+set mailserver {{ monit_mailserver_host }} port {{ monit_mailserver_port }}
+  username "{{ monit_mailserver_user }}" password "{{ monit_mailserver_password }}"
+  {% if monit_mailserver_ssl_version is defined -%}
+  using {{ monit_mailserver_ssl_version }}
+  {% endif -%}
+  with timeout {{ monit_mailserver_timeout | default(5) }} seconds
+
+
+set alert {{ monit_alert_address }}
+
+{% if monit_alert_mail_format is defined -%}
+set mail-format {
+{% for key in ['from', 'reply-to', 'subject', 'message'] -%}
+{% if monit_alert_mail_format[key] is defined %}
+  {{ key }}: {{ monit_alert_mail_format[key] }}
+{% endif %}
+{% endfor -%}
+}
+{% endif -%}
