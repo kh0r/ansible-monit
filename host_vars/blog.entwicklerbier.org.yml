@@ -12,3 +12,20 @@ monit_services:
     type: filesystem
     rules:
       - "if space usage > 80% for 8 cycles then alert"
+
+  - name: apache
+    type: process
+    target: /var/run/apache2/apache2.pid
+    start: /etc/init.d/apache2 start
+    stop: /etc/init.d/apache2 stop
+    rules:
+    -  "if totalcpu > 80% for 3 cycles then alert"
+    -  "if totalcpu > 80% for 6 cycles then restart"
+  - name: mysql
+    type: process
+    target: /var/run/mysqld/mysqld.pid
+    start: "/etc/init.d/mysql start"
+    stop: "/etc/init.d/mysql stop"
+    rules:
+    -  "if totalcpu > 80% for 3 cycles then alert"
+    -  "if totalcpu > 80% for 6 cycles then restart"
